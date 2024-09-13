@@ -1,3 +1,7 @@
+[![Demo asciicast](https://asciinema.org/a/MFoUFVbGEr5xNJXMOhVVnZ1YM.svg)](https://asciinema.org/a/MFoUFVbGEr5xNJXMOhVVnZ1YM)
+
+![Demo GIF](./docs/demo/invoicing-demo.gif)
+
 make sure taskdb is actual and everything relevant is tagged
 
 cp customer-name/prev-month-date customer-name/new-month-date
