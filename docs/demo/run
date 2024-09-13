@@ -1,0 +1,77 @@
+#!/bin/bash
+set -euo pipefail
+set -x
+
+SESSION_NAME=invoicing-demo
+tmux kill-session -t "$SESSION_NAME" || true
+xfce4-terminal --geometry 94x37 --command "tmux new-session -s $SESSION_NAME"
+sleep 1
+WINID=$(xwininfo -tree -root | grep docs/demo | awk '{ print $1 }' | head -n1)
+send() {
+	tmux send-keys -t "$SESSION_NAME" "$@"
+}
+
+send  "cd ../../" Enter
+send  "cd u" Tab Tab Enter  # cd ultimate-evil/2024-10-01
+send  "make clean" Enter
+send  "cd ../../" Enter
+
+rm -f /tmp/invoicing-demo.cast
+send  "asciinema rec /tmp/invoicing-demo.cast" Enter
+send  "clear" Enter
+MKV=/tmp/invoicing-demo-"$(date +%s)".mkv
+ffmpeg \
+	-f x11grab \
+	-thread_queue_size 1024 \
+	-framerate 25 \
+	-draw_mouse 0 \
+	-use_wallclock_as_timestamps 1 \
+	-window_id "$WINID" \
+	-i "$DISPLAY" \
+	-codec:v libx264 \
+	-preset ultrafast -qp 0 \
+	"$MKV" &
+sleep 1
+
+
+send  "ls -ltr" Enter
+sleep 1
+send  "cd u" Tab Tab Enter  # cd ultimate-evil/2024-10-01
+sleep 1
+send  "ls -ltr" Enter
+sleep 1
+send  "cat env.sh.inc" Enter
+sleep 2
+send  "make" Enter
+sleep 1
+send  "ls -ltr" Enter
+sleep 2
+send  "cat timesheet.txt" Enter
+sleep 2
+send  "cat amount.sh.inc" Enter
+sleep 2
+send  "echo https://evilpay.com/1234567890abcdef > pay.url" Enter
+sleep 1
+send  "make" Enter
+sleep 1
+send  "lynx invoice.html" Enter
+sleep 5
+send  "q" "y"
+sleep 1
+send  "make email-draft.txt" Enter
+sleep 2
+send  "make email.txt" Enter
+sleep 1
+send  Enter
+sleep 1
+send  Enter
+sleep 2
+send  ":wq" Enter
+sleep 2
+send  "y" Enter
+sleep 1
+killall ffmpeg
+sleep 1
+send  "C-d" Enter
+
+ffmpeg -i "$MKV" -vf "fps=2,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 "$MKV".gif
