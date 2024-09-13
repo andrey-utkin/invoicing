@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- <body style="width: 210mm;"> -->
+<body>
+<h1>Invoice</h1>
+<h2>Jean-Baptiste Emanuel Zorg</h2>
+<table style="width: 100%;">
+<tr>
+<td style="vertical-align: top;">
+Invoice number: $INVOICE_ID
+<br>Date of issue: $ISSUED_DATE
+<br>Date due: $DUE_DATE
+<br>Jean-Baptiste Emanuel Zorg
+<br><a href="mailto:customer-support@zorg.example">customer-support@zorg.example</a>
+<br>
+</td>
+
+<td style="vertical-align: top;">
+Bill to:
+$BILL_TO
+</td>
+</tr>
+<table>
+<br>
+
+<h2>
+$CURRENCY_SYMBOL$AMOUNT due $DUE_DATE
+<br>
+<a href="$PAY_URL">Pay online</a>
+</h2>
+
+<br>Software development work for $PROJECT in $COVERED_PERIOD_STR, $HOURS hr @ $RATE $CURRENCY/hr
+
+<br>Amount: $CURRENCY_SYMBOL$AMOUNT

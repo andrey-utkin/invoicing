@@ -1,0 +1,9 @@
+\pset footer off
+
+SELECT
+'HOURS=' || ROUND(SUM(duration)/3600.0, 2)::text
+FROM billable
+UNION
+SELECT
+'AMOUNT=' || (ROUND(SUM(duration)/3600.0, 2) * ${RATE})::text
+FROM billable

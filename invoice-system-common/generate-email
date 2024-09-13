@@ -1,0 +1,22 @@
+#!/bin/bash
+set -euo pipefail
+
+source env.sh.inc
+
+if ! cat email-template/headers.txt; then
+	echo "To: $RECIPIENTS"
+	echo "Cc: $RECIPIENTS_CC"
+fi
+echo "Subject: Invoice for $COVERED_PERIOD_STR"
+echo # end of headers, start of body
+
+cat << EOF
+$GREETING
+
+Please see the timesheet and invoice attached.
+
+The payment link:
+$(cat pay.url)
+
+Thanks!
+EOF

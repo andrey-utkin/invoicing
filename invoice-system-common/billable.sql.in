@@ -1,0 +1,12 @@
+CREATE TEMPORARY TABLE billable
+	AS
+		SELECT * FROM depgraph(alias('$CUSTOMER'))
+		WHERE
+		NOT COALESCE(tags, '') ~ 'nonbillable'
+		AND scheduled >= '$PERIOD_START'
+		AND scheduled <  '$PERIOD_NEXT_START'
+		AND scheduled < CURRENT_TIMESTAMP -- CURRENT_DATE
+		AND COALESCE(duration, 0) > 0
+	EXCEPT
+		SELECT * FROM depgraph(alias('$CUSTOMER-nonbillable'))
+;

@@ -1,0 +1,21 @@
+\pset footer off
+
+SELECT
+scheduled AS date,
+ROUND(duration/3600.0, 2) AS hours,
+regexp_replace(description, '^${CUSTOMER}: ', '', 'i') AS description
+FROM billable
+ORDER BY scheduled
+;
+SELECT
+date_trunc('week', scheduled)::date AS week,
+ROUND(SUM(duration)/3600.0, 2) AS hours_in_week
+FROM billable
+GROUP BY week
+ORDER BY week
+;
+SELECT
+ROUND(SUM(duration)/3600.0, 2) AS "hours total",
+${RATE} AS "hourly rate, ${RATE_CURRENCY}",
+ROUND(SUM(duration)/3600.0, 2) * ${RATE} AS "amount billed"
+FROM billable
