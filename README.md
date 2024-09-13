@@ -2,6 +2,8 @@
 
 ![Demo GIF](./docs/demo/invoicing-demo.gif)
 
+![Demo PDF looks like this](./docs/demo/invoice.pdf.png)
+
 make sure taskdb is actual and everything relevant is tagged
 
 cp customer-name/prev-month-date customer-name/new-month-date
